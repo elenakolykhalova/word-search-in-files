@@ -4,6 +4,7 @@ import (
 	"io/fs"
 	"path/filepath"
 	"regexp"
+	"sort"
 	"strings"
 	"sync"
 	"word-search-in-files/pkg/internal/dir"
@@ -65,6 +66,7 @@ func (s *Searcher) Search(word string) (files []string, err error) {
 	for result := range results {
 		files = append(files, result)
 	}
+	sort.Strings(files) //сортируем список файлов
 
 	// Проверка ошибок
 	for err := range errs {
