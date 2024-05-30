@@ -23,8 +23,11 @@ func (s *Searcher) Search(word string) (files []string, err error) {
 	}
 
 	// Регулярное выражение для точного поиска слова, можно было бы использовать strings.Contains,
-	//но тогда выходили бы все слова, которые так же включают частичное сопадение искомого слова
-	regexPattern := `\b` + regexp.QuoteMeta(word) + `\b`
+	// но тогда выходили бы все слова, которые так же включают частичное сопадение искомого слова
+	// так же не работает с кирилицей такое regexPattern := `\b` + regexp.QuoteMeta(word) + `\b`
+	// потому добавила условия слева начало строки или пробельный символ,
+	// справа конец строки, или пробельный символ, или точка, или запятая
+	regexPattern := `(?:^|\s)` + regexp.QuoteMeta(word) + `(?:\s|$|,|.)`
 	re, err := regexp.Compile(regexPattern)
 	if err != nil {
 		return nil, err
